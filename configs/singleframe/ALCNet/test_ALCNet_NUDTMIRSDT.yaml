@@ -1,0 +1,13 @@
+model:
+  network:
+    name: ALCNet
+
+dataset:
+  name: NUDT-MIRSDT  # [MIST, NUDT-MIRSDT]
+  root: ./data/NUDT-MIRSDT  # data root path
+  full_supervision: True
+
+test:
+  exp_root: /media/Data1/gr/CSNet/results/ALCNet_NUDTMIRSDT/20250526_034021/
+  num_workers: 16  # number of data loading workers
+  checkpoint: /media/Data1/gr/CSNet/results/ALCNet_NUDTMIRSDT/20250526_034021/checkpoints/model_epoch_32.pth

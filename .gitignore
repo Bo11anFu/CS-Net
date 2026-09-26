@@ -1,0 +1,63 @@
+# Python caches and local environments
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Native build artifacts
+build/
+dist/
+*.egg-info/
+*.o
+*.obj
+*.so
+*.pyd
+
+# Training outputs and checkpoints
+*.pth
+*.pt
+*.ckpt
+results/
+result/*
+!result/.gitkeep
+runs/
+log/
+logs/
+.triton-cache/
+
+# Local datasets
+MIST_0912/
+NUDT-MIRSDT/
+data/
+
+# Local editor history
+.history/
+.vscode/
+.idea/
+AGENTS.md
+
+# Vendored repository retained outside the parent Git history
+**/models/multiframe/involution/
+
+# Operating-system files
+.DS_Store
+Thumbs.db
+
+# Additional local tooling caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+*.ninja
+.ninja_deps
+.ninja_log
+
+# Local analysis scripts excluded from the published repository
+/test_and_visualize_CSHD.py
+/test_and_visualize_MSAM_level2.py
+/test_dataset_batch_compat.py
+/test_mist_dataset_path_compat.py
+/vis_feature.py
+/visual.py
+/visual_allfeature.py
+/visual_cat.py

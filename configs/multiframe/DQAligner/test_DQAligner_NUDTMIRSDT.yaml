@@ -1,0 +1,13 @@
+model:
+  network:
+    name: DQAligner
+
+dataset:
+  name: NUDT-MIRSDT  # [MIST, NUDT-MIRSDT]
+  root: /home/ubuntu/data/zhengqinxu/object_detection/Deep-MIST/data/NUDT-MIRSDT  # data root path
+  full_supervision: True
+
+test:
+  exp_root: /home/ubuntu/data/zhengqinxu/object_detection/Deep-MIST/results/DQAligner_NUDTMIRSDT_0627/20260628_000830 # test results save root
+  num_workers: 16  # number of data loading workers
+  checkpoint: /home/ubuntu/data/zhengqinxu/object_detection/Deep-MIST/results/DQAligner_NUDTMIRSDT_0627/20260628_000830/checkpoints/model_epoch_56.pth

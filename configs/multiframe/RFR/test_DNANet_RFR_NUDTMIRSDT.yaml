@@ -1,0 +1,14 @@
+model:
+  network:
+    name: RFR
+    head_name: DNANet
+
+dataset:
+  name: NUDT-MIRSDT  # [MIST, NUDT-MIRSDT]
+  root: ./data/NUDT-MIRSDT  # data root path
+  full_supervision: True
+
+test:
+  exp_root: /media/kou/Data1/gr/CSNet/results/DNANet_RFR_NUDTMIRSDT/20250523_152631/
+  num_workers: 16  # number of data loading workers
+  checkpoint: /media/kou/Data1/gr/CSNet/results/DNANet_RFR_NUDTMIRSDT/20250523_152631/checkpoints/model_epoch_20.pth

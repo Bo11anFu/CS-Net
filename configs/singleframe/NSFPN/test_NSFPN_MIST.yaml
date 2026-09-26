@@ -1,0 +1,26 @@
+model:
+  network:
+    name: NSFPN
+    input_channels: 3
+dataset:
+  name: MIST  # [MIST, NUDT-MIRSDT]
+  root: /home/ubuntu/data/zhengqinxu/object_detection/DATA/MIST_0912/MIST_0912  # data root path
+  num_inputs: 5  # number of input frames
+  img_size: [ 384, 384 ]  # image size
+  frame_padding: False
+  data_aug: # data augmentation options
+    random_flip: True
+    random_crop: True
+    random_rotation: True
+    color_enhance: False
+    random_peper: False
+
+test:
+  exp_root: /home/ubuntu/data/zhengqinxu/object_detection/Deep-MIST/results/NSFPN_SLSIoULoss_MIST/20260829_133031
+  num_workers: 16  # number of data loading workers
+  checkpoint: /home/ubuntu/data/zhengqinxu/object_detection/Deep-MIST/results/NSFPN_SLSIoULoss_MIST/20260829_133031/checkpoints/model_epoch_59.pth
+
+
+
+  #best
+  #/home/ubuntu/data/zhengqinxu/object_detection/Deep-MIST/results/LS_STDNet_MIST_0219_PANLSAGGDecoder_L7S5ParaLoss/20260219_233302/checkpoints/model_epoch_48.pth

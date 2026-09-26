@@ -1,0 +1,42 @@
+model:
+  network:
+    name: MiM
+  optimizer:
+    type: AdamW  # AdamW Adam
+    init_lr: !!float 5e-4  # initial learning rate  1e-3  5e-4
+    betas: [ 0.9, 0.999 ]
+    weight_decay: !!float 1e-4
+  lr_scheduler:
+    warmup_iters: -1  # number of warmup iters (-1 for no warmup)
+    scheduler:
+      type: MultiStepLR  # [LambdaLR, StepLR, MultiStepLR, CosineAnnealingLR]
+      step_interval: epoch  # iter or epoch (every iter or every epoch to update once)
+      milestones: [ 32, 44 ]  # [ 24, 33 ]  [ 32, 44 ]
+      gamma: 0.1
+#    scheduler:
+#      type: StepLR  # [LambdaLR, StepLR, MultiStepLR, CosineAnnealingLR]
+#      step_interval: epoch  # iter or epoch (every iter or every epoch to update once)
+#      step_size: 5  # 5, 10
+#      gamma: 0.5
+  loss:
+    num_preds: 1  # number of predicted masks (default 1, when using deep supervision > 1)
+    loss_1:
+      type: SoftIoULoss
+      weight: 1
+      smooth: 1
+      reduction: mean
+
+dataset:
+  name: NUDT-MIRSDT  # [MIST, NUDT-MIRSDT]
+  root: ./data/NUDT-MIRSDT  # data root path
+  full_supervision: True
+
+train:
+  exp_name: MiM_NUDTMIRSDT  # experiment name (as well as the root for saving results)
+  batch_size: 8  # total batch size of all gpus, 12, 16
+  num_workers: 16  # number of data loading workers
+  total_epochs: 48  # number of total epochs to run, 48, 50
+  log_interval: 50  # default 50 iters
+  save_interval: 1  # default 1 epoch
+  val_interval: 1  # default 1 epoch
+  resume:

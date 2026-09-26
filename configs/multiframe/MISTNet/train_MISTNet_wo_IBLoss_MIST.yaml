@@ -1,0 +1,45 @@
+model:
+  network:
+    name: MISTNet_wo_IBLoss
+  optimizer:
+    type: AdamW
+    init_lr: !!float 1e-3  # initial learning rate  1e-3
+    betas: [ 0.9, 0.999 ]
+    weight_decay: !!float 1e-4
+  lr_scheduler:
+    warmup_iters: -1  # number of warmup iters (-1 for no warmup)
+    scheduler:
+      type: MultiStepLR  # [LambdaLR, StepLR, MultiStepLR, CosineAnnealingLR]
+      step_interval: epoch  # iter or epoch (every iter or every epoch to update once)
+      milestones: [ 24, 33 ]  # [ 24, 33 ]  [ 32, 44 ]
+      gamma: 0.1
+  loss:
+    num_preds: 1  # number of predicted masks (default 1, when using deep supervision > 1)
+    loss_1:
+      type: SoftIoULoss
+      weight: 1
+      smooth: 1
+      reduction: mean
+
+dataset:
+  name: MIST  # [MIST, NUDT-MIRSDT]
+  root: ./data/MIST_0912  # data root path
+  num_inputs: 5  # number of input frames
+  img_size: [ 384, 384 ]  # image size
+  frame_padding: False
+  data_aug: # data augmentation options
+    random_flip: True
+    random_crop: True
+    random_rotation: True
+    color_enhance: False
+    random_peper: False
+
+train:
+  exp_name: MISTNet_wo_IBLoss_MIST_0912  # experiment name (as well as the root for saving results)
+  batch_size: 16  # total batch size of all gpus, default 12
+  num_workers: 16  # number of data loading workers
+  total_epochs: 36  # number of total epochs to run
+  log_interval: 50  # default 50 iters
+  save_interval: 1  # default 1 epoch
+  val_interval: 1  # default 1 epoch
+  resume:

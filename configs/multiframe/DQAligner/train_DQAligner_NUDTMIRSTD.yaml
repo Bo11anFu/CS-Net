@@ -1,0 +1,38 @@
+model:
+  network:
+    name: DQAligner
+    input_channels: 3
+    num_frames: 5
+    train_mode: False
+    key_mode: last
+  optimizer:
+    type: Adam
+    init_lr: !!float 5e-4
+    betas: [ 0.9, 0.999 ]
+  lr_scheduler:
+    warmup_iters: -1
+    scheduler:
+      type: StepLR
+      step_interval: epoch
+      step_size: 5
+      gamma: 0.2
+  loss:
+    num_preds: 1
+    loss_1:
+      type: AdaFocalLoss
+      weight: 1
+
+dataset:
+  name: NUDT-MIRSDT
+  root: /home/ubuntu/data/zhengqinxu/object_detection/Deep-MIST/data/NUDT-MIRSDT
+  full_supervision: True
+
+train:
+  exp_name: DQAligner_NUDTMIRSDT_0627
+  batch_size: 2
+  num_workers: 16
+  total_epochs: 60
+  log_interval: 50
+  save_interval: 1
+  val_interval: 1
+  resume:

@@ -1,0 +1,23 @@
+model:
+  network:
+    name: DNANet_DHiF
+    input_channels: 3
+    deep_supervision: True
+
+dataset:
+  name: MIST
+  root: /home/ubuntu/data/zhengqinxu/object_detection/DATA/MIST_0912/MIST_0912
+  num_inputs: 5
+  img_size: [ 384, 384 ]
+  frame_padding: False
+  data_aug:
+    random_flip: True
+    random_crop: True
+    random_rotation: True
+    color_enhance: False
+    random_peper: False
+
+test:
+  exp_root: /home/ubuntu/data/zhengqinxu/object_detection/Deep-MIST/results/DNANet_DHiF_MIST_0708/20260709_230454
+  num_workers: 16
+  checkpoint: /home/ubuntu/data/zhengqinxu/object_detection/Deep-MIST/results/DNANet_DHiF_MIST_0708/20260715_004208/checkpoints/model_epoch_10.pth

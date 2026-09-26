@@ -1,0 +1,13 @@
+model:
+  network:
+    name: CSNet
+
+dataset:
+  name: NUDT-MIRSDT  # [MIST, NUDT-MIRSDT]
+  root: /home/ubuntu/data/zhengqinxu/object_detection/CSNet/data/NUDT-MIRSDT  # data root path
+  full_supervision: True
+
+test:
+  exp_root: /home/ubuntu/data/zhengqinxu/object_detection/CSNet/results/CSNet_MIST_0219_SSRD_L7S5ParaLoss/NUDT_Test # test results save root
+  num_workers: 16  # number of data loading workers
+  checkpoint: /home/ubuntu/data/zhengqinxu/object_detection/CSNet/results/CSNet_NUDTMIRSDT_0327_71/20260327_133319/checkpoints/model_epoch_45.pth

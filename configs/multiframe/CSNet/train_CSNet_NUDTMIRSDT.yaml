@@ -1,0 +1,41 @@
+model:
+  network:
+    name: CSNet
+  optimizer:
+    type: AdamW  # AdamW Adam
+    init_lr: !!float 1.5e-3  # initial learning rate  1e-3  5e-4
+    betas: [ 0.9, 0.999 ]
+    weight_decay: !!float 1e-4
+  lr_scheduler:
+    warmup_iters: 1500  # number of warmup iters (-1 for no warmup)
+    scheduler:
+      type: CosineAnnealingLR  # [LambdaLR, StepLR, MultiStepLR, CosineAnnealingLR]
+      step_interval: epoch  # iter or epoch (every iter or every epoch to update once)
+      eta_min: !!float 1e-4
+#    scheduler:
+#      type: StepLR  # [LambdaLR, StepLR, MultiStepLR, CosineAnnealingLR]
+#      step_interval: epoch  # iter or epoch (every iter or every epoch to update once)
+#      step_size: 5  # 5, 10
+#      gamma: 0.5
+  loss:
+    num_preds: 1  # number of predicted masks (default 1, when using deep supervision > 1)
+    loss_1:
+      type: MultiSoftIoULoss
+      weight: 1
+      smooth: 1
+      reduction: mean
+
+dataset:
+  name: NUDT-MIRSDT  # [MIST, NUDT-MIRSDT]
+  root: /home/ubuntu/data/zhengqinxu/object_detection/CSNet/data/NUDT-MIRSDT  # data root path
+  full_supervision: True
+
+train:
+  exp_name: CSNet_NUDTMIRSDT_0327_71  # experiment name (as well as the root for saving results)
+  batch_size: 12  # total batch size of all gpus, 12, 16
+  num_workers: 16  # number of data loading workers
+  total_epochs: 60  # number of total epochs to run, 48, 50
+  log_interval: 50  # default 50 iters
+  save_interval: 1  # default 1 epoch
+  val_interval: 1  # default 1 epoch
+  resume:

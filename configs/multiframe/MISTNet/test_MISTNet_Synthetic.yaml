@@ -1,0 +1,13 @@
+model:
+  network: 
+    name: MISTNet
+
+dataset:
+  name: Synthetic 
+  root: /home/ubuntu/data/zhengqinxu/object_detection/DATA/test_video_1.5_384
+  num_inputs: 5
+
+test:
+  exp_root: /home/ubuntu/data/zhengqinxu/object_detection/CSNet/results/MISTNet_Synthetic384
+  num_workers: 8 
+  checkpoint: /home/ubuntu/data/zhengqinxu/object_detection/CSNet/results/MISTNet_MIST_0912_42_78/20251009_182134/checkpoints/model_epoch_48.pth

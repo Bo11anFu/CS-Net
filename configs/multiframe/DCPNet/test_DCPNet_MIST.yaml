@@ -1,0 +1,27 @@
+model:
+  network:
+    name: DCPNet
+    num_inputs: 5
+    num_classes: 1
+    in_channels: 3
+    num_blocks: [2, 2, 2, 2]
+    nb_filter: [8, 16, 32, 64, 128]
+    num_stages: 4
+
+dataset:
+  name: MIST
+  root: /home/ubuntu/data/zhengqinxu/object_detection/DATA/MIST_0912/MIST_0912
+  num_inputs: 5
+  img_size: [384, 384]
+  frame_padding: False
+  data_aug:
+    random_flip: False
+    random_crop: False
+    random_rotation: False
+    color_enhance: False
+    random_peper: False
+
+test:
+  exp_root: /home/ubuntu/data/zhengqinxu/object_detection/Deep-MIST/results/DCPNet_MIST/20260916_170358
+  num_workers: 16
+  checkpoint: /home/ubuntu/data/zhengqinxu/object_detection/Deep-MIST/results/DCPNet_MIST/20260916_170358/checkpoints/model_epoch_31.pth

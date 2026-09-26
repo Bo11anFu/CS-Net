@@ -1,0 +1,22 @@
+model:
+  network:
+    name: MSHNet_DHiF
+    use_pconv: False
+
+dataset:
+  name: MIST
+  root: /home/ubuntu/data/zhengqinxu/object_detection/DATA/MIST_0912/MIST_0912
+  num_inputs: 5
+  img_size: [ 384, 384 ]
+  frame_padding: False
+  data_aug:
+    random_flip: True
+    random_crop: True
+    random_rotation: True
+    color_enhance: False
+    random_peper: False
+
+test:
+  exp_root: /home/ubuntu/data/zhengqinxu/object_detection/Deep-MIST/results/MSHNet_DHiF_MIST_0703/20260703_131605/tb_log
+  num_workers: 16
+  checkpoint: /home/ubuntu/data/zhengqinxu/object_detection/Deep-MIST/results/MSHNet_DHiF_MIST_0703/20260703_131605/checkpoints/model_epoch_150.pth

@@ -1,0 +1,41 @@
+model:
+  network:
+    name: ADSUNet
+    input_channels: 3
+    num_frames: 5
+    num_classes: 2
+    output_channel: 0
+  optimizer:
+    type: Adam
+    init_lr: !!float 1e-3
+    betas: [ 0.9, 0.999 ]
+    weight_decay: !!float 0
+  lr_scheduler:
+    warmup_iters: -1
+    scheduler:
+      type: StepLR
+      step_interval: epoch
+      step_size: 333
+      gamma: 0.5
+  loss:
+    num_preds: 1
+    loss_1:
+      type: SoftIoULoss
+      weight: 1
+      smooth: 1
+      reduction: mean
+
+dataset:
+  name: NUDT-MIRSDT
+  root: /home/ubuntu/data/zhengqinxu/object_detection/Deep-MIST/data/NUDT-MIRSDT
+  full_supervision: True
+
+train:
+  exp_name: ADSUNet_NUDTMIRSDT_0702
+  batch_size: 32
+  num_workers: 2
+  total_epochs: 100
+  log_interval: 50
+  save_interval: 1
+  val_interval: 1
+  resume:
