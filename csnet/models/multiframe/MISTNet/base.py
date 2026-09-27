@@ -3,11 +3,11 @@ import torch.nn as nn
 
 
 def make_layer(block, in_channels, out_channels, num_blocks=1):
-    #block为可调用对象，快速创建由多个相同类型模块组成的网络
+
     layers = [block(in_channels, out_channels)] 
     for _ in range(num_blocks - 1):
         layers.append(block(out_channels, out_channels))
-    #*会将列表中的每个元素（即每个网络层模块）解包成独立的参数
+ 
     return nn.Sequential(*layers)
 
 class ChannelAttention(nn.Module):

@@ -335,15 +335,6 @@ class PDA(nn.Module):
         return feat
 
 
-# if __name__ == '__main__':
-#     from thop import profile
-#
-#     n, t, c, h, w = 1, 20, 1, 256, 256
-#     in_fea = torch.rand(n, t, c, h, w).cuda()
-#     net = RFR().cuda()
-#     flops, params = profile(net, inputs=(in_fea,))
-#     print('Params: %2fM' % (params / 1e6))
-#     print('FLOPs: %2fGFLOPs' % (flops / 1e9))
 
 if __name__ == '__main__':
     model = RFR(head_name='ResUNet').cuda()

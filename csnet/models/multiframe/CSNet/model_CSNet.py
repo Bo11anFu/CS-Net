@@ -175,7 +175,7 @@ class MSAM(nn.Module):
         return [self.aggregators[j](compensated_feats[j]) for j in range(self.num_levels)]
 
 
-#采用Unet解码器 BaseDecoder
+
 class BaseDecoder(nn.Module):
     def __init__(self, num_classes, block, nb_filter):
         super(BaseDecoder, self).__init__()
@@ -193,25 +193,7 @@ class BaseDecoder(nn.Module):
 
         return pred_z_1
 
-class CSBaseDecoder(nn.Module):
-    def __init__(self, num_classes, nb_filter):
-        super(CSBaseDecoder, self).__init__()
-        self.up = nn.Upsample(scale_factor=2, mode='bilinear', align_corners=True)
-        self.decoder_3 = CSHDG(nb_filter[2] + nb_filter[3], nb_filter[2])
-        self.decoder_2 = CSHDG(nb_filter[1] + nb_filter[2], nb_filter[1])
-        self.decoder_1 = CSHDG(nb_filter[0] + nb_filter[1], nb_filter[0])
-        self.head = nn.Conv2d(nb_filter[0], num_classes, 1)
 
-    def forward(self, observations):
-        z_3 = self.decoder_3(torch.cat([observations[2], self.up(observations[3])], 1))
-        z_2 = self.decoder_2(torch.cat([observations[1], self.up(z_3)], 1))
-        z_1 = self.decoder_1(torch.cat([observations[0], self.up(z_2)], 1))
-        pred_z_1 = self.head(z_1)
-
-        return pred_z_1
-
-
-#不使用PWConv，直接在内部改变通道
 class SSRD(nn.Module):
     def __init__(self, num_classes,  nb_filter):
         super(SSRD, self).__init__()
