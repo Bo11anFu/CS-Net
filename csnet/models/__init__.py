@@ -7,7 +7,6 @@ from csnet.models.singleframe.ACM.model_ACM import ASKCResUNet as ACM
 from csnet.models.singleframe.ALCNet.model_ALCNet import ASKCResNetFPN as ALCNet
 from csnet.models.singleframe.DNANet.model_DNANet import DNANet
 from csnet.models.singleframe.FC3Net.model_FC3Net import FC3 as FC3Net
-# from csnet.models.singleframe.ISNet.model_ISNet import ISNet_ours as ISNet
 from csnet.models.singleframe.UIUNet.model_UIUNet import UIUNet
 from csnet.models.singleframe.RDIAN.model_RDIAN import RDIAN
 from csnet.models.singleframe.MiM.model_MiM import MiM
@@ -17,11 +16,11 @@ from csnet.models.multiframe.DTUM.model_ALCNet_DTUM import ALCNet_DTUM
 from csnet.models.multiframe.DTUM.model_DNANet_DTUM import DNANet_DTUM
 from csnet.models.multiframe.DTUM.model_UIUNet_DTUM import UIUNet_DTUM
 from csnet.models.multiframe.PSTFNet.model_PSTFNet import PSTFNet
-#from csnet.models.multiframe.RFR.model_RFR import RFR  # 只有跑RFR的时候才取消注释
+#from csnet.models.multiframe.RFR.model_RFR import RFR  
 from csnet.models.multiframe.LVNet.model_LVNet import LVNet
-#####记得注释掉
+
 # from csnet.models.multiframe.MISTNet.model_MISTNet import MISTNet
-#from csnet.models.multiframe.STDNet.model_STDNet import STDNet
+
 from csnet.models.multiframe.DeepPro.model_DeepPro import DeepPro
 from csnet.models.multiframe.RFR_STDNet.model_RFR_STDNet import RFR_STDNet
 from csnet.models.multiframe.STDQNet.model_STDQNet import STDQNet
@@ -50,14 +49,13 @@ def init_weights(m):
         fan_out = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
         fan_out //= m.groups
         m.weight.data.normal_(0, math.sqrt(2.0 / fan_out))
-        # nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
+
         if m.bias is not None:
             m.bias.data.zero_()
     elif isinstance(m, nn.Conv3d):
         fan_out = m.kernel_size[0] * m.kernel_size[1] * m.kernel_size[2] * m.out_channels
         fan_out //= m.groups
         m.weight.data.normal_(0, math.sqrt(2.0 / fan_out))
-        # nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
         if m.bias is not None:
             m.bias.data.zero_()
     elif isinstance(m, nn.BatchNorm2d):
@@ -102,15 +100,6 @@ def build_model(model_cfg):
         model = RFR(**model_cfg)
     elif model_name == 'LVNet':
         model = LVNet(**model_cfg)
-    ####记得注释
-    # elif model_name == 'MISTNet':
-    #     model = MISTNet(**model_cfg)
-    elif model_name == 'RFR_STDNet':
-        model = RFR_STDNet(**model_cfg)
-    elif model_name == 'STDQNet':
-        model = STDQNet(**model_cfg)
-    elif model_name == 'STDBNet':
-        model = STDBNet(**model_cfg)
     elif model_name == 'CSNet':
         model = CSNet(**model_cfg)
     elif model_name == 'DeepPro':
@@ -135,7 +124,6 @@ def build_model(model_cfg):
         model = RFR_vis_feat(**model_cfg)
     else:
         raise NotImplementedError(f"Invalid model name '{model_name}'.")
-    # model.apply(init_weights)
     return model, model_name
 
 
@@ -160,13 +148,13 @@ def run_model(model, model_name, use_sufficiency_loss, use_edge_loss, frames):
     elif model_name in ['RFR']:
         frames = frames.permute(0, 2, 1, 3, 4).contiguous()
         preds = model(frames)
-    elif model_name in [ 'STDQNet', 'STDBNet', 'RFR_STDNet', 'CSNet']:#'MISTNet', 'MISTNet_wo_SNCB'
+    elif model_name in ['CSNet']:
         if use_sufficiency_loss:
             preds, pred_z_list, pred_v_list = model(frames)
             return preds, pred_z_list, pred_v_list
         else:
             preds = model(frames)
-    elif model_name in [ 'ResUNet_DTUM_vis_feat']:#'MISTNet_vis_feat', 'MISTNet_wo_MFB_Ls_vis_feat',
+    elif model_name in [ 'ResUNet_DTUM_vis_feat']:
         preds, z_4, z_3, z_2, z_1 = model(frames)
         return preds, z_4, z_3, z_2, z_1
     elif model_name in ['RFR_vis_feat']:
