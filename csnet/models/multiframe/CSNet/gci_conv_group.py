@@ -1,4 +1,4 @@
-# gci_conv_group_agg.py
+
 import torch
 from torch.autograd import Function
 import triton
@@ -7,9 +7,7 @@ import triton.language as tl
 import math
 import torch.nn as nn
 
-# --------------------------
-# grid helper
-# --------------------------
+
 def _grid(numel: int, bs: int):
     return (triton.cdiv(numel, bs),)
 
@@ -24,9 +22,7 @@ def _idx(i, n: int, c: int, h: int, w: int):
     return ni, ci, hi, wi, m
 
 
-# ============================================================
-# Forward Triton Kernel
-# ============================================================
+
 @triton.jit
 def gci_conv_group_fwd(
     x_ptr, w_ptr, o_ptr,
@@ -66,9 +62,7 @@ def gci_conv_group_fwd(
     tl.store(o_ptr + o_off, val.to(CT), mask=m)
 
 
-# ============================================================
-# Backward: w.r.t x
-# ============================================================
+
 @triton.jit
 def gci_conv_group_bwd_x(
     go_ptr, w_ptr, gx_ptr,
@@ -108,9 +102,7 @@ def gci_conv_group_bwd_x(
     tl.store(gx_ptr + gx_off, val.to(CT), mask=m)
 
 
-# ============================================================
-# Backward: w.r.t w
-# ============================================================
+
 @triton.jit
 def gci_conv_group_bwd_w(
     go_ptr, x_ptr, gw_ptr,
@@ -156,12 +148,9 @@ def gci_conv_group_bwd_w(
             tl.store(gw_ptr + w_off, (s_x * s_go).to(CT), mask=m)
 
 
-# ============================================================
-# Autograd wrapper
-# ============================================================
+
 class GCIConvGroupAggFn(Function):
     @staticmethod
-    # @custom_fwd(device_type="cuda")
     def forward(ctx, x, w, out_channels):
         n, ic, h, width = x.shape
         groups = w.shape[1]  # wc
@@ -197,7 +186,7 @@ class GCIConvGroupAggFn(Function):
         return o
 
     @staticmethod
-    # @custom_bwd(device_type="cuda")
+
     def backward(ctx, go):
         x, w = ctx.saved_tensors
         ks, pad = ctx.ks, ctx.pad
