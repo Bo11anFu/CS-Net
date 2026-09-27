@@ -122,8 +122,6 @@ class SelfDistillation(nn.Module):
 
         return z, pred_z, pred_v
 
-#PDD解码器内部由SelfDistillation模块组成,SelfDistillation模块由MFB为核心
-#MFB用来过滤背景信息，pred_z是来自过滤后的特征预测，pred_v是来自未过滤特征的预测
 
 class ProgressiveDistillationDecoder(nn.Module):
     def __init__(self, num_classes, block, nb_filter, modulator):
@@ -183,7 +181,7 @@ class MISTNet(nn.Module):
 
 if __name__ == '__main__':
     model = MISTNet().cuda()
-    inputs = torch.randn((1, 3, 5, 384, 384)).cuda()  # Params = 0.85M FLOPs = 19.31G
+    inputs = torch.randn((1, 3, 5, 384, 384)).cuda()  
     flops, params = profile(model, (inputs,))
     print('Params = ' + str(round(params / 1000 ** 2, 2)) + 'M')
     print('FLOPs = ' + str(round(flops / 1000 ** 3, 2)) + 'G')
