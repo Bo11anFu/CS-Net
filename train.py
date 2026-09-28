@@ -59,7 +59,7 @@ class Trainer(object):
                                       num_workers=self.cfg['train']['num_workers'], pin_memory=True)
         self.val_hard_loader = DataLoaderX(self.val_hard_dataset, batch_size=1,
                                            num_workers=self.cfg['train']['num_workers'], pin_memory=True)
-        self.freeze_iou_weight_epoch = 1
+        self.freeze_iou_weight_epoch = 5
         self.iou_weight_ema = None
         # Original = 0.9
         self.iou_weight_ema_momentum = 0.97  

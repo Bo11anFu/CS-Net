@@ -29,7 +29,7 @@ class SoftIoULoss(nn.Module):
 
 class MultiSoftIoULoss(nn.Module):
     def __init__(self, smooth=1.0, reduction='mean',
-                 prior_weights=(0.8, 0.15, 0.05)):
+                 prior_weights=(0.7, 0.2, 0.1)):
         super().__init__()
 
         self.smooth = smooth
@@ -40,7 +40,7 @@ class MultiSoftIoULoss(nn.Module):
         prior = prior / prior.sum()
         self.register_buffer('log_prior', torch.log(prior))
 
-        # ===== 可学习偏移（epoch1 内会被训练）=====
+        # ===== 可学习偏移（前 5 个 epoch 内会被训练）=====
         self.scale_logits = nn.Parameter(torch.zeros(len(prior)))
 
         # ===== 冻结相关 =====
@@ -57,7 +57,7 @@ class MultiSoftIoULoss(nn.Module):
 
     def freeze_with_weights(self, weights: torch.Tensor):
         """
-        在 epoch1 结束后调用
+        在第 5 个 epoch 结束后调用
         """
         with torch.no_grad():
             self.fixed_weights.copy_(weights)
