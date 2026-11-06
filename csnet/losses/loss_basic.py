@@ -35,15 +35,15 @@ class MultiSoftIoULoss(nn.Module):
         self.smooth = smooth
         self.reduction = reduction
 
-        # ===== 固定先验=====
+
         prior = torch.tensor(prior_weights, dtype=torch.float32)
         prior = prior / prior.sum()
         self.register_buffer('log_prior', torch.log(prior))
 
-        # ===== 可学习偏移（前 5 个 epoch 内会被训练）=====
+
         self.scale_logits = nn.Parameter(torch.zeros(len(prior)))
 
-        # ===== 冻结相关 =====
+
         self.freeze = False
         self.register_buffer('fixed_weights', prior.clone())
 

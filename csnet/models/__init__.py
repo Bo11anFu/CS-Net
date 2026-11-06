@@ -22,9 +22,6 @@ from csnet.models.multiframe.LVNet.model_LVNet import LVNet
 # from csnet.models.multiframe.MISTNet.model_MISTNet import MISTNet
 
 from csnet.models.multiframe.DeepPro.model_DeepPro import DeepPro
-from csnet.models.multiframe.RFR_STDNet.model_RFR_STDNet import RFR_STDNet
-from csnet.models.multiframe.STDQNet.model_STDQNet import STDQNet
-from csnet.models.multiframe.STDBNet.model_STDBNet import STDBNet
 from csnet.models.multiframe.CSNet.model_CSNet import CSNet
 from csnet.models.singleframe.NSFPN.model_NSFPN import MSHNet_NSFPN
 from csnet.models.singleframe.DHiF.model_DNANet_DHiF import DNANet_DHiF

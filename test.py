@@ -76,7 +76,7 @@ class Tester(object):
         self.pred_vis_dir = os.path.join(self.cfg['test']['exp_root'], 'pred_vis')
         make_dir(self.pred_vis_dir)
 
-    def test(self, split='hard'):      #这个分的是测试all或者hard
+    def test(self, split='hard'):
         print(f"[testset]\n")
         self.model.eval()
         # reset metrics
@@ -177,7 +177,7 @@ def main(args):
 def args_parser():
     parser = argparse.ArgumentParser(description='PyTorch CSNet Test')
     parser.add_argument('--config', type=str,
-                        default='/home/ubuntu/data/zhengqinxu/object_detection/CSNet/configs/multiframe/CSNet/test_CSNet_MIST.yaml',
+                        default='',
                         help='path to config file')
     parser.add_argument('--seed', type=int, default=0, help='random seed')
     parser.add_argument('--device', type=str, default='cuda', help='device (use cuda or cpu)')

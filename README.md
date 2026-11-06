@@ -1,10 +1,16 @@
 # CSNet
 
-Official PyTorch implementation of **CSNet: A Center-Surround Motion Saliency Integration Network for Moving Infrared Small Target Detection**.
+Official PyTorch implementation of **CSNet. TGRS 2026.**
 
 ## News
 
 - **2026-09-01:** Our dataset, code, and trained model weights are released.
+
+## Result
+
+![Benchmark results on NUDT-MIRSDT, MIST-ALL, and MIST-HARD](assets/benchmark_results.png)
+
+![ROC curves on NUDT-MIRSDT, MIST-ALL, and MIST-HARD](assets/roc_curves.png)
 
 ## Getting Started
 
@@ -24,6 +30,11 @@ The reference environment targets Linux x86_64. The main package versions are:
 | einops | 0.4.1 |
 
 See `requirements.txt` for the complete dependency list. Windows is not the reference platform; when using `triton-windows`, ensure that its bundled or system C compiler is discoverable through the `CC` environment variable.
+
+### Dataset
+
+- MIST [[Google Drive]](https://drive.google.com/file/d/1jJabpOzmuLgxa52V1dtBuXv5-RpKNiSn/view?usp=sharing)
+- NUDT-MIRSDT [[Baidu Netdisk]](https://pan.baidu.com/s/1pSN350eurMafLiHBQBnrPA?pwd=5whn)
 
 ### 2. Installation
 
@@ -48,7 +59,9 @@ pip install -r requirements.txt
 
 ## Basic Usage
 
-Update the dataset roots, experiment output paths, and checkpoint paths in the selected YAML file before running the commands below. Please refer to the configuration files in `configs/` for detailed training settings. The reported training setup used two 24 GB GPUs. The released MIST and NUDT-MIRSDT configurations both use a total batch size of 12.
+Pass the selected YAML configuration explicitly with `--config` for both training and testing.
+
+Update the dataset roots, experiment output paths, and checkpoint paths in the selected YAML file before running the commands below. Please refer to the configuration files in `configs/` for detailed training settings. The reported training setup used a single 48 GB GPU. The released MIST and NUDT-MIRSDT configurations both use a total batch size of 12.
 
 ### 1. Training
 
@@ -71,3 +84,7 @@ python test.py --config ./configs/multiframe/CSNet/test_CSNet_MIST.yaml
 # Test on NUDT-MIRSDT
 python test.py --config ./configs/multiframe/CSNet/test_CSNet_NUDTMIRSDT.yaml
 ```
+
+## Acknowledgement
+
+This code borrows heavily from [MIST](https://github.com/ShuCvlab/MIST) and [LSNet](https://github.com/THU-MIG/lsnet). We thank Rui Gao and the MIST team, as well as [Ao Wang](https://arxiv.org/search/cs?searchtype=author&query=Wang,+A) and the LSNet team, for sharing their implementations.

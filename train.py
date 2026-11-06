@@ -61,7 +61,7 @@ class Trainer(object):
                                            num_workers=self.cfg['train']['num_workers'], pin_memory=True)
         self.freeze_iou_weight_epoch = 5
         self.iou_weight_ema = None
-        # Original = 0.9
+
         self.iou_weight_ema_momentum = 0.97  
         
 
@@ -81,7 +81,7 @@ class Trainer(object):
         optim_params = list(self.model.parameters())
         
 
-        # 检查损失函数中是否有可学习参数
+
         for loss_type, criterion in self.loss_fn.items():
             if hasattr(criterion, 'parameters'):
                 optim_params.extend(list(criterion.parameters()))
@@ -130,8 +130,8 @@ class Trainer(object):
         self.logger.info(f"[{self.cfg['train']['exp_name']}][epoch:{epoch}][trainset]\n")
         self.model.train()
         epoch_st_time = iter_st_time = time.time()
-        for iter_idx, data in enumerate(self.train_loader): #处理一个Batchsize为一个iter iter_idx从0开始为当前epoch处理了多少个batchsize
-            self.cur_iter += 1      #全局迭代次数
+        for iter_idx, data in enumerate(self.train_loader):
+            self.cur_iter += 1
             # update learning rate
             update_lr(self.optimizer, self.init_lr, self.lr_scheduler, self.step_interval, self.warmup_iters,
                       self.cur_iter, iter_idx)
@@ -152,21 +152,13 @@ class Trainer(object):
             if not isinstance(preds, (list, tuple)):
                 preds = [preds]
             
-            # print("pred shape:", preds[0].shape)
-            # print("pred shape:", preds[1].shape)
-            # print("pred shape:", preds[2].shape)
-            # print("pred shape:", preds[3].shape)
-            # print("mask shape:", mask.shape)
-            
-            #loss.detach().clone(), 把 tensor 从计算图分离并复制
-            #遍历所有损失函数进行计算和组合
+
             for loss_type, criterion in self.loss_fn.items():
                 if loss_type == 'SufficiencyLoss':
-                    #计算SufficiencyLoss并乘以权重
                     loss = criterion(pred_z_list, pred_v_list, mask) * self.loss_weight[loss_type]                  
                     self.train_loss[loss_type] += loss.detach().clone()#更新
                     self.train_iter_loss[loss_type] += loss.detach().clone()
-                    total_loss += loss#累加到总损失
+                    total_loss += loss
                 elif loss_type == 'EdgeLoss':
                     loss = criterion(edge_out, mask) * self.loss_weight[loss_type]
                     self.train_loss[loss_type] += loss.detach().clone()
@@ -182,20 +174,19 @@ class Trainer(object):
                         if loss_type in ['SLSIoULoss', 'SDMLoss']:
                             loss = criterion(pred, mask, epoch) * self.loss_weight[loss_type][i]
                         else:
-                            #计算其他损失函数并乘以权重
+
                             loss = criterion(pred, mask) * self.loss_weight[loss_type][i]
-                        #带索引的损失更新，为每个尺度的输出单独记录损失
+
                         self.train_loss[loss_type + '_' + str(i)] += loss.detach().clone()
                         self.train_iter_loss[loss_type + '_' + str(i)] += loss.detach().clone()
                         total_loss += loss#累加到总损失
             self.optimizer.zero_grad()
             total_loss.backward()
 
-            # ========== 分层梯度裁剪 ==========
-            # 收集模型参数
+
             model_params = [p for p in self.model.parameters() if p.grad is not None]
 
-            # 收集损失函数中的可学习参数
+
             loss_params = []
             for loss_type, criterion in self.loss_fn.items():
                 if hasattr(criterion, 'parameters'):
@@ -203,7 +194,7 @@ class Trainer(object):
                         if p.grad is not None:
                             loss_params.append(p)
 
-            # 分别裁剪 模型主参数采用宽松方式裁剪，Loss权重参数采用严格方式裁剪
+
             if model_params:
                 torch.nn.utils.clip_grad_norm_(model_params, max_norm=1.0)
             if loss_params:
@@ -440,7 +431,7 @@ def main(args):
 def args_parser():
     parser = argparse.ArgumentParser(description='PyTorch CSNet Training')
     parser.add_argument('--config', type=str,
-                        default='/home/ubuntu/data/zhengqinxu/object_detection/CSNet/configs/multiframe/CSNet/train_CSNet_NUDTMIRSDT.yaml',
+                        default='',
                         help='path to config file')
     parser.add_argument('--seed', type=int, default=0, help='random seed')
     parser.add_argument('--device', type=str, default='cuda', help='device (use cuda or cpu)')
