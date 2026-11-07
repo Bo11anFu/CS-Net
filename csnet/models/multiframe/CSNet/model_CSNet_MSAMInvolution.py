@@ -9,7 +9,7 @@ from torch.nn.init import trunc_normal_
 from torch.nn.modules.utils import _triple
 import torch.nn as nn
 
-from csnet.models.multiframe.STDBNet import base_STD as base
+from csnet.models.multiframe.CSNet import base_STD as base
 
 from thop import profile, clever_format
 import functools
